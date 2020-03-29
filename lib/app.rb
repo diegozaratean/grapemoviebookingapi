@@ -12,7 +12,7 @@ module API
 		resource :movies do
 
 			post "/", rabl: "movies/item"  do
-				@movie = Movie.new params[:movie]
+				@movie = Movie.new(name: params["name"],description: params["description"],imageurl: params["imageurl"],begindate: params["begindate"],enddate: params["enddate"])
 				@movie.save	
 			end
 
@@ -44,6 +44,44 @@ module API
 			end
 			get "/:id" , rabl: "movies/item" do
 				@movie = Movie[params[:id]]
+			end
+		end
+
+		resource :bookings do
+
+			post "/", rabl: "bookings/item"  do
+				dateparms = params["date"]
+				movie_id = params["movieid"]
+				@bookings = Booking.where{(date =~ dateparms ) & (movieid =~ movie_id)}
+				if @bookings.count < 10
+					@booking = Booking.new(movieid: params["movieid"],date: params["date"],name: params["name"])
+					@booking.save
+				else
+					error_msg = "Can't make reservation the movie you want is full on that date"
+    				error!({ 'error_msg' => error_msg }, 409)
+				end
+			end
+
+			params do
+				optional :date, type: String
+				optional :begindate, type: String
+				optional :enddate, type: String
+			end
+			get "/", rabl: "bookings/collection"  do				
+				if params && params[:date]
+					@bookings = Booking.where(date: params[:date])
+				elsif params && params[:begindate] && params[:enddate]
+					@bookings = Booking.where(date: params[:begindate]..params[:enddate])
+				else
+					@bookings = Booking.all
+				end	
+			end
+
+			params do
+				requires :id, type: Integer
+			end
+			get "/:id" , rabl: "bookings/item" do
+				@booking = Booking[params[:id]]
 			end
 		end
 	end

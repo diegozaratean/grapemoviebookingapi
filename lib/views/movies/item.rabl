@@ -1,3 +1,3 @@
 object @movie
 
-attributes :name, :description
+attributes :id, :name, :description, :imageurl, :begindate, :enddate	

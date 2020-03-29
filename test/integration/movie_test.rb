@@ -13,7 +13,7 @@ describe "Movie" do
 		before do
 			post "/movies", movie: {
 				name:"life of pi",
-				description:"a beatufill adventure of a castaway..",
+				description:"a beautiful adventure of a castaway..",
 				imageurl:"https://1.bp.blogspot.com/-BTEuLGFaHxw/URhURgz67wI/AAAAAAAAIPQ/LG-it4UcwxI/s1600/life-of-pi-LifeOfPi_VerA_Poster_rgb.jpg",
 				begindate:"2019-09-10",
 				enddate:"2019-11-10"
@@ -30,7 +30,7 @@ describe "Movie" do
   		end
 
 		it "Shows the description" do
-			last_response.body.include?("a beatufill adventure of a castaway..")
+			last_response.body.include?("a beautiful adventure of a castaway..")
 		end
 	end
 
@@ -49,7 +49,7 @@ describe "Movie" do
   		end
 
 		it "List all movies info" do
-			last_response.body.include?("a beatufill adventure of a castaway..")
+			last_response.body.include?("a beautiful adventure of a castaway..")
 		end
 	end
 end
